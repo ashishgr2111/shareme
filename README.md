@@ -1,0 +1,1 @@
+This is a React learning project. I am following this guide -> https://github.com/adrianhajdin/project_shareme_social_media. But, the Google OAuth2.0 mechanism used in this repo seems to be deprecated. Therefore, I have made a few important modifications which incorporate the latest changes in Google OAuth2.0 API.
