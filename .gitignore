@@ -1,2 +1,3 @@
 shareme_frontend/.env
 *package-lock.json
+*.lock
