@@ -1,25 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { AiOutlineLogout } from 'react-icons/ai';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { AiOutlineLogout } from "react-icons/ai";
+import { useParams, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
-import { userCreatedPinsQuery, userQuery, userSavedPinsQuery } from '../utils/data';
-import { client } from '../client';
-import MasonryLayout from './MasonryLayout';
-import Spinner from './Spinner';
+import {
+  userCreatedPinsQuery,
+  userQuery,
+  userSavedPinsQuery,
+} from "../utils/data";
+import { client } from "../client";
+import MasonryLayout from "./MasonryLayout";
+import Spinner from "./Spinner";
 
-const activeBtnStyles = 'bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none';
-const notActiveBtnStyles = 'bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none';
+const activeBtnStyles =
+  "bg-red-500 text-white font-bold p-2 rounded-full w-20 outline-none";
+const notActiveBtnStyles =
+  "bg-primary mr-4 text-black font-bold p-2 rounded-full w-20 outline-none";
 
 const UserProfile = () => {
   const [user, setUser] = useState();
   const [pins, setPins] = useState();
-  const [text, setText] = useState('Created');
-  const [activeBtn, setActiveBtn] = useState('created');
+  const [text, setText] = useState("Created");
+  const [activeBtn, setActiveBtn] = useState("created");
   const navigate = useNavigate();
   const { userId } = useParams();
 
-  const User = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
+  const User =
+    localStorage.getItem("user") !== "undefined"
+      ? JSON.parse(localStorage.getItem("user"))
+      : localStorage.clear();
 
   useEffect(() => {
     const query = userQuery(userId);
@@ -29,7 +38,7 @@ const UserProfile = () => {
   }, [userId]);
 
   useEffect(() => {
-    if (text === 'Created') {
+    if (text === "Created") {
       const createdPinsQuery = userCreatedPinsQuery(userId);
 
       client.fetch(createdPinsQuery).then((data) => {
@@ -47,7 +56,7 @@ const UserProfile = () => {
   window.logout = () => {
     localStorage.clear();
 
-    navigate('/login');
+    navigate("/login");
   };
 
   if (!user) return <Spinner message="Loading profile" />;
@@ -76,23 +85,13 @@ const UserProfile = () => {
             />
           </div>
           <h1 className="font-bold text-3xl text-center mt-3">
-            {user.userName}
+            {user?.userName}
           </h1>
           <div className="absolute top-0 z-1 right-0 p-2">
-            {userId === User.sub && (
-              <div>
-                <div
-                  id="g_id_onload"
-                  data-client_id={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}
-                  data-auto_prompt="false"
-                  data-callback="logout"
-                ></div>
-                <div
-                  className="g_id_signout"
-                >
-                  <AiOutlineLogout color="red" fontSize={31} />
-                </div>
-              </div>
+            {userId === User?.sub && (
+              <button onClick={logout}>
+                <AiOutlineLogout color="red" fontSize={31} />
+              </button>
             )}
           </div>
         </div>
@@ -101,9 +100,11 @@ const UserProfile = () => {
             type="button"
             onClick={(e) => {
               setText(e.target.textContent);
-              setActiveBtn('created');
+              setActiveBtn("created");
             }}
-            className={`${activeBtn === 'created' ? activeBtnStyles : notActiveBtnStyles}`}
+            className={`${
+              activeBtn === "created" ? activeBtnStyles : notActiveBtnStyles
+            }`}
           >
             Created
           </button>
@@ -111,9 +112,11 @@ const UserProfile = () => {
             type="button"
             onClick={(e) => {
               setText(e.target.textContent);
-              setActiveBtn('saved');
+              setActiveBtn("saved");
             }}
-            className={`${activeBtn === 'saved' ? activeBtnStyles : notActiveBtnStyles}`}
+            className={`${
+              activeBtn === "saved" ? activeBtnStyles : notActiveBtnStyles
+            }`}
           >
             Saved
           </button>
@@ -129,7 +132,6 @@ const UserProfile = () => {
           </div>
         )}
       </div>
-
     </div>
   );
 };
